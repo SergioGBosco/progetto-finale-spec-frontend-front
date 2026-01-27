@@ -1,0 +1,38 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.col-33 {
+  width: 33%;
+}
+
+.Card-fruit {
+  height: 300px;
+  width: 300px;
+  border: 1px solid green;
+  border-radius: 30px;
+  margin: 15px 0;
+}
+
+.Card-img {
+  text-align: center;
+  ;
+  padding: 20px;
+  height: 60%;
+}
+
+.Card-description {
+  padding: 10px;
+}
