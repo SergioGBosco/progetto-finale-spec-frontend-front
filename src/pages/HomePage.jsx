@@ -3,24 +3,15 @@ import { GlobalContext } from '../context/GlobalContext.jsx';
 import { Link } from 'react-router-dom';
 
 const HomePage = () => {
-  const [fruit, setFruit] = useState([]);
-  const url = "http://localhost:3001";
 
-  const { toggleFavorite, favorites, addToCompare } = useContext(GlobalContext);
-
-  useEffect(() => {
-    fetch(`${url}/fruits`)
-      .then(res => res.json())
-      .then(data => setFruit(data))
-      .catch(err => console.error("Errore API:", err));
-  }, []);
+  const { fruits, favorites, toggleFavorite, addToCompare, compareList } = useContext(GlobalContext);
 
   return (
     <div className="container">
       <h1>I Nostri Frutti</h1>
 
       <div className="row">
-        {fruit.map(f => {
+        {fruits.map(f => {
           const isFav = favorites.some(fav => fav.id === f.id);
 
           return (
