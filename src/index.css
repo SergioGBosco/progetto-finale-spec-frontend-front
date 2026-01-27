@@ -1,38 +1,58 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* Wrapper principale */
 .container {
-  margin: 0 auto;
   max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
+/* Griglia flessibile */
 .row {
   display: flex;
   flex-wrap: wrap;
+  gap: 20px;
 }
 
-.col-33 {
-  width: 33%;
+/* La singola colonna/card */
+.card-fruit {
+  flex: 1 0 calc(33.333% - 20px);
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  box-sizing: border-box;
+  background-color: white;
 }
 
-.Card-fruit {
-  height: 300px;
-  width: 300px;
-  border: 1px solid green;
-  border-radius: 30px;
-  margin: 15px 0;
+.card-img {
+  height: 150px;
+  background-color: #f4f4f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  border-radius: 4px;
 }
 
-.Card-img {
-  text-align: center;
-  ;
-  padding: 20px;
-  height: 60%;
+.card-description h2 {
+  margin: 15px 0 5px;
 }
 
-.Card-description {
-  padding: 10px;
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+}
+
+/* Bottoni */
+.btn-action {
+  cursor: pointer;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+}
+
+.btn-fav.active {
+  border-color: red;
+  background-color: #fff5f5;
 }
