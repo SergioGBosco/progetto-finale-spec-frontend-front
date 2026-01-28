@@ -1,24 +1,49 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback, useMemo } from 'react';
 import { GlobalContext } from '../context/GlobalContext.jsx';
 import { Link } from 'react-router-dom';
 
+function debounce(callback, delay) {
+  let timer;
+  return (value) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      callback(value);
+    }, delay)
+  }
+}
+
+
 const HomePage = () => {
+
+  const [inputValue, setInputValue] = useState("");
   const [searchFruit, setSearchFruit] = useState("");
 
   const [categoryFruit, setCategoryFruit] = useState("")
 
   const { fruits, favorites, toggleFavorite, addToCompare, compareList } = useContext(GlobalContext);
 
+  const debounceSearch = useCallback(debounce(setSearchFruit, 500), [])
 
-  const filteredFruits = fruits.filter(f => {
-    const Search = f.title.toLowerCase().includes(searchFruit.toLowerCase());
-    const Category = categoryFruit === "" || f.category === categoryFruit;
-    return Search && Category;
-  });
+
+  const handleSearchChange = (e) => {
+    const val = e.target.value;
+    setInputValue(val);
+    debounceSearch(val);
+  };
+
+  console.log(searchFruit)
+
+
+  const filteredFruits = useMemo(() => {
+    return fruits.filter(f => {
+      const Search = f.title.toLowerCase().includes(searchFruit.toLowerCase());
+      const Category = categoryFruit === "" || f.category === categoryFruit;
+      return Search && Category;
+    })
+  }, [searchFruit, categoryFruit, fruits]);
 
   const categories = [...new Set(fruits.map(f => f.category))];
 
-  console.log(searchFruit)
   return (
     <div className="container">
       <h1>I Nostri Frutti</h1>
@@ -30,8 +55,8 @@ const HomePage = () => {
           type="text"
           placeholder="Cerca un frutto..."
           className="search-input"
-          value={searchFruit}
-          onChange={(e) => setSearchFruit(e.target.value)}
+          value={inputValue}
+          onChange={handleSearchChange}
         />
 
         <select
