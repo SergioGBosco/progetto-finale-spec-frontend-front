@@ -2,28 +2,18 @@ import React, { useEffect, useState, useContext, useCallback, useMemo } from 're
 import { GlobalContext } from '../context/GlobalContext.jsx';
 import { Link } from 'react-router-dom';
 
-function debounce(callback, delay) {
-  let timer;
-  return (value) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      callback(value);
-    }, delay)
-  }
-}
-
 
 const HomePage = () => {
 
   const [inputValue, setInputValue] = useState("");
   const [searchFruit, setSearchFruit] = useState("");
-
   const [categoryFruit, setCategoryFruit] = useState("")
+  const [sortBy, setSortBy] = useState('title');
+  const [sortOrder, setSortOrder] = useState(1);
 
-  const { fruits, favorites, toggleFavorite, addToCompare, compareList } = useContext(GlobalContext);
+  const { fruits, favorites, toggleFavorite, addToCompare, compareList, debounce } = useContext(GlobalContext);
 
   const debounceSearch = useCallback(debounce(setSearchFruit, 500), [])
-
 
   const handleSearchChange = (e) => {
     const val = e.target.value;
@@ -31,16 +21,17 @@ const HomePage = () => {
     debounceSearch(val);
   };
 
-  console.log(searchFruit)
-
-
   const filteredFruits = useMemo(() => {
-    return fruits.filter(f => {
-      const Search = f.title.toLowerCase().includes(searchFruit.toLowerCase());
-      const Category = categoryFruit === "" || f.category === categoryFruit;
-      return Search && Category;
-    })
-  }, [searchFruit, categoryFruit, fruits]);
+    return [...fruits]
+      .filter(f => {
+        const Search = f.title.toLowerCase().includes(searchFruit.toLowerCase());
+        const Category = categoryFruit === "" || f.category === categoryFruit;
+        return Search && Category;
+      })
+      .sort((a, b) => {
+        return a[sortBy].localeCompare(b[sortBy]) * sortOrder;
+      });
+  }, [searchFruit, categoryFruit, fruits, sortBy, sortOrder]);
 
   const categories = [...new Set(fruits.map(f => f.category))];
 
@@ -69,6 +60,17 @@ const HomePage = () => {
             <option key={cat} value={cat}>{cat}</option>
           ))}
         </select>
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value="title">Ordina per Nome</option>
+          <option value="category">Ordina per Categoria</option>
+        </select>
+
+        <button
+          className="btn-action"
+          onClick={() => setSortOrder(sortOrder === 1 ? -1 : 1)}
+        >
+          {sortOrder === 1 ? "↑ A-Z" : "↓ Z-A"}
+        </button>
       </div>
       <div className="row">
         {filteredFruits.map(f => {
@@ -102,7 +104,7 @@ const HomePage = () => {
                   className="btn-action"
                   onClick={() => addToCompare(f)}
                 >
-                  ⚖️ Confronta
+                  Confronta
                 </button>
               </div>
 

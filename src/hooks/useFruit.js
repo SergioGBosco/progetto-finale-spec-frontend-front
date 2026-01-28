@@ -6,6 +6,7 @@ const useFruit = () => {
   const [favorites, setFavorites] = useState([]);
   const [compareList, setCompareList] = useState([]);
 
+
   const url = "http://localhost:3001";
 
   useEffect(() => {
@@ -22,7 +23,6 @@ const useFruit = () => {
         : [...prev, fruit]
     );
   };
-  console.log(favorites)
 
   const addToCompare = (fruit) => {
     if (compareList.length < 2 && !compareList.find((f) => f.id === fruit.id)) {
@@ -31,8 +31,20 @@ const useFruit = () => {
       setCompareList(compareList.filter(f => f.id !== fruit.id));
     }
   };
-  console.log(compareList)
-  return { fruits, favorites, toggleFavorite, addToCompare, compareList }
+
+
+
+  function debounce(callback, delay) {
+    let timer;
+    return (value) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        callback(value);
+      }, delay)
+    }
+  }
+
+  return { fruits, favorites, toggleFavorite, addToCompare, compareList, handleSearchChange, debounce, inputValue }
 }
 
 export default useFruit
