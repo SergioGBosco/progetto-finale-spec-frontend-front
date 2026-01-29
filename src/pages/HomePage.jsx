@@ -93,10 +93,6 @@ const HomePage = () => {
           return (
             <div className="card-fruit" key={f.id}>
 
-              <div className="card-img">
-                immagine del frutto
-              </div>
-
               <div className="card-description">
                 <h2>{f.title}</h2>
                 <p>Categoria: {f.category}</p>

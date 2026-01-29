@@ -11,8 +11,6 @@ const FruitDetail = () => {
 
   const fruit = fruits.find(f => f.id === parseInt(id));
 
-  const isFav = favorites.some(fav => fav.id === fruit.id);
-
   if (!fruit) {
     return (
       <div>
@@ -21,25 +19,39 @@ const FruitDetail = () => {
       </div>
     )
   }
-  console.log(fruit)
-  return (
-    <div>
-      <h1>Pagina di Dettaglio del prodotto</h1>
-      <p>{fruit.title}</p>
-      <p>{fruit.category}</p>
-      <p><strong>Prezzo:</strong> {fruit.pricePerKg}€/kg</p>
-      <p><strong>Colore:</strong> {fruit.color}</p>
-      <div className="card-actions">
-        <button
-          className={`btn-action btn-fav ${isFav ? 'active' : ''}`}
-          onClick={() => toggleFavorite(fruit)}
-        >
-          {isFav ? '❤️' : '🤍'}
-        </button>
 
-        <Link to="/" className="btn-action">
-          Torna alla Home
-        </Link>
+  const isFav = favorites.some(fav => fav.id === fruit.id);
+
+  console.log("Frutto completo:", fruit);
+  return (
+    <div className="detail-container">
+      <h1 className="detail-title">{fruit.title}</h1>
+
+      <div className="detail-card">
+        <div className="detail-image">
+          <img src={fruit.img} alt={fruit.title} />
+        </div>
+
+        <div className="detail-info">
+          <h2 className="info-title">{fruit.title}</h2>
+          <p className="info-category"><strong>Categoria:</strong> {fruit.category}</p>
+          <p className="info-price"><strong>Prezzo:</strong> {fruit.pricePerKg}€/kg</p>
+          <p className="info-color"><strong>Colore:</strong> {fruit.color}</p>
+          <p className="info-calories"><strong>Calorie:</strong> {fruit.calories}</p>
+
+          <div className="card-actions">
+            <button
+              className={`btn-action btn-fav ${isFav ? 'active' : ''}`}
+              onClick={() => toggleFavorite(fruit)}
+            >
+              {isFav ? '❤️' : '🤍'}
+            </button>
+
+            <Link to="/" className="btn-action">
+              Torna alla Home
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   )
