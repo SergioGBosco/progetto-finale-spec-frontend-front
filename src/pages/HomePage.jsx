@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext, useCallback, useMemo } from 'react';
 import { GlobalContext } from '../context/GlobalContext.jsx';
 import { Link } from 'react-router-dom';
-
+import ModalCompare from '../Modal.jsx/ModalCompare.jsx';
 
 const HomePage = () => {
 
@@ -10,8 +10,22 @@ const HomePage = () => {
   const [categoryFruit, setCategoryFruit] = useState("")
   const [sortBy, setSortBy] = useState('title');
   const [sortOrder, setSortOrder] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { fruits, favorites, toggleFavorite, addToCompare, compareList, debounce } = useContext(GlobalContext);
+  const { fruits, favorites, toggleFavorite, addToCompare, compareList, debounce, setCompareList } = useContext(GlobalContext);
+
+
+  // UseEffect per la modale 
+  useEffect(() => {
+    if (compareList.length === 2) {
+      setIsModalOpen(true);
+    }
+  }, [compareList]);
+
+  const CloseModal = () => {
+    setIsModalOpen(false);
+    setCompareList([])
+  }
 
   const debounceSearch = useCallback(debounce(setSearchFruit, 500), [])
 
@@ -111,7 +125,13 @@ const HomePage = () => {
             </div>
           );
         })}
+
       </div>
+      <ModalCompare
+        isOpen={isModalOpen}
+        content={compareList}
+        onClose={CloseModal}
+      />
     </div>
   );
 }

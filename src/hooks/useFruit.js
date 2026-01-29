@@ -44,7 +44,7 @@ const useFruit = () => {
     }
   }
 
-  return { fruits, favorites, toggleFavorite, addToCompare, compareList, handleSearchChange, debounce, inputValue }
+  return { fruits, favorites, toggleFavorite, addToCompare, compareList, debounce, setCompareList }
 }
 
 export default useFruit
