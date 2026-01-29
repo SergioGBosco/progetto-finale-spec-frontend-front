@@ -5,7 +5,6 @@ const ModalCompare = ({ isOpen, content, onClose }) => {
   return (
     <div className="overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="flex-close-x" onClick={onClose}>&times;</button>
 
         <h2>Confronto Prodotti</h2>
 
