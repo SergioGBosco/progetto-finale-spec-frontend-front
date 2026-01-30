@@ -2,6 +2,8 @@ import React, { useEffect, useState, useContext, useCallback, useMemo } from 're
 import { GlobalContext } from '../context/GlobalContext.jsx';
 import { Link } from 'react-router-dom';
 import ModalCompare from '../Modal.jsx/ModalCompare.jsx';
+import FavoriteToggle from '../components/FavoriteToggle.jsx';
+import FavoriteSidebar from '../components/FavoriteSidebar.jsx';
 
 const HomePage = () => {
 
@@ -11,6 +13,7 @@ const HomePage = () => {
   const [sortBy, setSortBy] = useState('title');
   const [sortOrder, setSortOrder] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [favOpen, setFavOpen] = useState(false);
 
   const { fruits, favorites, toggleFavorite, addToCompare, compareList, debounce, setCompareList } = useContext(GlobalContext);
 
@@ -51,7 +54,11 @@ const HomePage = () => {
 
   return (
     <div className="container">
-      <h1>I Nostri Frutti</h1>
+      <div className="header-with-fav">
+        <h1>I Nostri Frutti</h1>
+        <FavoriteToggle isOpen={favOpen} setIsOpen={setFavOpen} />
+      </div>
+      <FavoriteSidebar isOpen={favOpen} onClose={() => setFavOpen(false)} />
 
 
 

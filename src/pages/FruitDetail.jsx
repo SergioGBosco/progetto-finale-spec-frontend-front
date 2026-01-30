@@ -1,13 +1,16 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { GlobalContext } from '../context/GlobalContext'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
+import FavoriteToggle from '../components/FavoriteToggle.jsx';
+import FavoriteSidebar from '../components/FavoriteSidebar.jsx';
 const FruitDetail = () => {
 
   const { id } = useParams();
 
   const { fruits, favorites, toggleFavorite } = useContext(GlobalContext);
+  const [favOpen, setFavOpen] = useState(false);
 
   const fruit = fruits.find(f => f.id === parseInt(id));
 
@@ -25,7 +28,11 @@ const FruitDetail = () => {
   console.log("Frutto completo:", fruit);
   return (
     <div className="detail-container">
-      <h1 className="detail-title">{fruit.title}</h1>
+      <div className="detail-header-with-fav">
+        <h1 className="detail-title">{fruit.title}</h1>
+        <FavoriteToggle isOpen={favOpen} setIsOpen={setFavOpen} />
+      </div>
+      <FavoriteSidebar isOpen={favOpen} onClose={() => setFavOpen(false)} />
 
       <div className="detail-card">
         <div className="detail-image">
