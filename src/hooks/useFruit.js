@@ -2,8 +2,22 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 const useFruit = () => {
 
+  // Funzione per caricare favoriti da localStorage
+  const loadFavoritesFromStorage = () => {
+    try {
+      const saved = localStorage.getItem('favorites');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return Array.isArray(parsed) ? parsed : [];
+      }
+    } catch (err) {
+      console.error('Errore caricamento preferiti da localStorage:', err);
+    }
+    return [];
+  };
+
   const [fruits, setFruit] = useState([]);
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState(loadFavoritesFromStorage());
   const [compareList, setCompareList] = useState([]);
 
 
@@ -15,6 +29,15 @@ const useFruit = () => {
       .then(data => setFruit(data))
       .catch(err => console.error("Errore API:", err));
   }, []);
+
+  // Salva i preferiti su localStorage , in versione stringa,  ogni volta che cambiano
+  useEffect(() => {
+    try {
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+    } catch (err) {
+      console.error('Errore salvataggio preferiti su localStorage:', err);
+    }
+  }, [favorites]);
 
   const toggleFavorite = (fruit) => {
     setFavorites((prev) =>
